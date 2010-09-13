@@ -1,0 +1,5 @@
+RewriteEngine on
+RewriteCond $1 !^(handler\.php)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}/index\.php !-f
+RewriteRule ^(.*)$ handler.php/$1 [L]
