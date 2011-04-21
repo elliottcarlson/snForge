@@ -59,12 +59,12 @@
         private function parse_request_uri()
         {
             // Remove the physical path to handler.php to allow for deep folder deployment of snForge
-            $this->request_uri = preg_replace('/^'.preg_replace('/\//', '\/', dirname($_SERVER['SCRIPT_NAME'])).'/', '', $this->request_uri);
+            $this->request_uri = preg_replace('/^'.preg_quote(dirname($_SERVER['SCRIPT_NAME']),"/").'/', '', $this->request_uri);
 
             // Seperate the query string (if any) from the Request URI
             if (strpos($this->request_uri, '?'))
             {
-                list($this->request_uri, $this->query_string) = split('\?', $this->request_uri, 2);
+                list($this->request_uri, $this->query_string) = explode('?', $this->request_uri, 2);
             }
 
             // Remove leading and trailing slash
@@ -113,7 +113,7 @@
             if (file_exists(BASEPATH.'controller/'.$this->controller.EXT))
             {
                 // Attempt to load the controller as a Plugin
-                $sn_controller = new Plugin(array('name' => $this->controller, 
+                $sn_controller = new Plugin(array('name' => $this->controller,
                                                   'class' => BASEPATH.'controller/'.$this->controller.EXT),
                                                   $this->vars);
 
@@ -156,7 +156,7 @@
             else if (file_exists(BASEPATH.'controller/'.$this->default_controller.EXT))
             {
                 $sn_controller = new Plugin(array('name' => $this->default_controller,
-                                                  'class' => BASEPATH.'controller/'.$this->default_controller.EXT), 
+                                                  'class' => BASEPATH.'controller/'.$this->default_controller.EXT),
                                                   $this->vars);
             }
             // Fallback #2 consists of attempting to load the default template view.
