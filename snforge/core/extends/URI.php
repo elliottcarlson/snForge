@@ -118,7 +118,7 @@
                                                   $this->vars);
 
                 // Determine if the specified function exists and run it
-                if ($this->function && $this->function != $this->controller)
+                if ($this->function)
                 {
                     if (in_array($this->function, array_keys($sn_controller->__loaded_methods)))
                     {
@@ -158,6 +158,22 @@
                 $sn_controller = new Plugin(array('name' => $this->default_controller,
                                                   'class' => BASEPATH.'controller/'.$this->default_controller.EXT),
                                                   $this->vars);
+
+                // Determine if the specified controller exists as a function and run it
+                if ($this->controller && $this->controller != $this->default_controller)
+                {
+                    if (in_array($this->controller, array_keys($sn_controller->__loaded_methods)))
+                    {
+                        $use_function = $this->controller;
+                        $sn_controller->$use_function($this->vars);
+                    }
+                    else if (in_array($this->default_function, array_keys($sn_controller->__loaded_methods)))
+                    {
+                        $use_function = $this->default_function;
+                        $sn_controller->$use_function($this->vars);
+                    }
+                }
+                exit;
             }
             // Fallback #2 consists of attempting to load the default template view.
             else if (file_exists(BASEPATH.'view/'.$this->default_controller.'.tpl'))
